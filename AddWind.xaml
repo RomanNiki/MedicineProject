@@ -1,0 +1,52 @@
+﻿<Window x:Class="PredpriyatieProject.AddWind"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PredpriyatieProject" xmlns:lctr="clr-namespace:PredpriyatieProject.ViewModels"
+        mc:Ignorable="d"
+        Title="AddWind" Height="450" Width="500" MaxHeight="450" MaxWidth="500" MinHeight="450" Style="{StaticResource VS2012WindowStyle1}" MinWidth="500"  ResizeMode="NoResize">
+    <Window.DataContext>
+        <lctr:SecondVM></lctr:SecondVM>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="0.1*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition/>
+            <RowDefinition Height="0.1*"/>
+            
+        </Grid.RowDefinitions>
+        <ToggleButton Style="{DynamicResource ToggleButtonStyle1}" Margin="5" Grid.ColumnSpan="3" Content="{Binding NameOfToggleButton}" IsChecked="{Binding IsChechedAddWind}"/>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <Label FontSize="13" Height="26" Content="Склад"/>
+            <ComboBox Width="210" FontSize="20" x:Name="Склад" Height="30" ItemsSource="{Binding ComboboxScladi}" SelectedIndex="0" SelectedValue="{Binding SelectedItemScladi}"></ComboBox>
+            <Label FontSize="13" Height="26" Content="Подразделение"/>
+            <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210" FontSize="20" x:Name="Подразделения" Height="30" ItemsSource="{Binding ComboboxPodrazdeleniya}" SelectedValue="{Binding SelecteditemPodrazd}" SelectedIndex="16"  ></ComboBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center">
+            <Label FontSize="12" Height="26" Content="Наименование ценности"/>
+            <ComboBox  Width="210"
+          IsTextSearchEnabled="True"   IsEditable="False" FontSize="20" x:Name="Лекарства" Height="30"  SelectedIndex="{Binding SelectedIndCennsoti}" ItemsSource="{Binding ComboboxNazvLecarstvХ}"></ComboBox>
+            <Label FontSize="13" Height="26" Content="Количество"/>
+            <TextBox Width="210" FontSize="20" x:Name="NameOfMedicine" Style="{StaticResource TextBoxStyle1}"  PreviewTextInput="NumericOnly" Height="30" Text="{Binding KolvoTextbox}"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" VerticalAlignment="Center">
+            <Label FontSize="13" Height="26" Content="Название документа"/>
+            <TextBox  Width="210" FontSize="20" x:Name="NazvDok" Height="30" Text="{Binding NameOfDoc}"  Style="{StaticResource TextBoxStyle1}"></TextBox>
+            <Label FontSize="13" Height="26" Content="Дата документа"/>
+            <DatePicker Style="{DynamicResource DatePickerStyle1}" Width="210" FontSize="15" x:Name="DateOfDoc" Height="30" SelectedDate="{Binding DateOfDoc}"></DatePicker>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Bottom">
+            <Button Width="210" Style="{StaticResource ButtonStyle1}" FontSize="14" Height="55" Content="Добавить" ></Button>
+        </StackPanel>
+    </Grid>
+</Window>
