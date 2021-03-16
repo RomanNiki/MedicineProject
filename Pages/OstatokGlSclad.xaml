@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="449" d:DesignWidth="800"
       Title="OstatokGlSclad"
-      DataContext="{Binding firstVM, Mode=OneWay, Source={StaticResource Locator}}" Background="#fff">
+         DataContext="{Binding firstVM, Mode=TwoWay, Source={StaticResource Locator}}" Background="#fff">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="3" Grid.RowSpan="5" Background="#EFEFF2"/>
         <Border Grid.ColumnSpan="2">
-            <DataGrid Style="{DynamicResource DataGridStyle1}"   ItemsSource="{Binding Path=GlList,UpdateSourceTrigger=PropertyChanged}" CanUserAddRows="False" AutoGenerateColumns="False" ColumnWidth="*" TextSearch.Text="{Binding TextForSearch}">
+            <DataGrid Style="{DynamicResource DataGridStyle1}"   ItemsSource="{Binding Path=GlList, UpdateSourceTrigger=PropertyChanged}" CanUserAddRows="False" AutoGenerateColumns="True" ColumnWidth="*"  >
            
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Наименование ценности" Binding="{Binding Название_ценности}" ></DataGridTextColumn>
@@ -45,7 +45,7 @@
                 <DatePicker Height="23" Style="{StaticResource DatePickerStyle1}" SelectedDate="{Binding dateTime,UpdateSourceTrigger=PropertyChanged}"/>
                 
             </StackPanel>
-            <Button Style="{DynamicResource ButtonStyle1}" Content="Вычеслить"  Height="50" Margin="2" Width="100" Command="{Binding ResultForDate}"/>
+            <Button Style="{DynamicResource ButtonStyle1}" Content="Вычеслить"  Height="50" Margin="2" Width="100" Command="{Binding Addbutte}"/>
             <StackPanel HorizontalAlignment="Center" Margin="2">
                 <Label Content="Поиск" />
                 <TextBox Style="{DynamicResource TextBoxStyle1}" Text="{Binding TextForSearch,UpdateSourceTrigger=PropertyChanged}" Height="25" FontSize="12pt" Width="100"/>

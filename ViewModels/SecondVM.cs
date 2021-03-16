@@ -1,4 +1,6 @@
 ﻿using DevExpress.Mvvm;
+using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +42,6 @@ namespace PredpriyatieProject.ViewModels
         }
         public string SelecteditemPodrazd { get => _selecteditemPodrazd;  set => SetProperty(ref _selecteditemPodrazd, value); }
         public int SelectedIndCennsoti { get; set; } = 0;
-
         MedicineContext medicineContext = new MedicineContext();
         private string nameOfToggleButton = "Приход";
         private bool isChechedAddWind;
@@ -55,7 +56,7 @@ namespace PredpriyatieProject.ViewModels
             {
                 if (value == true)
                 {
-                    NameOfToggleButton = "Уход";
+                    NameOfToggleButton = "Расход";
                 }
                 else
                 {
@@ -63,10 +64,35 @@ namespace PredpriyatieProject.ViewModels
                 }
                 isChechedAddWind = value;
             } }
-        public DelegateCommand AddButton = new DelegateCommand(() => { AddButtonMethod(); });
 
-       static private void AddButtonMethod()
+        public ICommand Addbutt
         {
+            get { return new RelayCommand(() => { AddButtonMethod(); }); }
+        }
+        private void AddButtonMethod()
+        {
+            ПриходРасход приходРасходadd = new ПриходРасход();
+            приходРасходadd.Дата = DateOfDoc;
+
+            //     приходРасходadd.ТипДокумента = Int32.Parse(medicineContext.ТипДокументацииs.Where(f => f.Название == NameOfToggleButton).Select(f => f.Id).ToQueryString());
+
+
+            приходРасходadd.ТипДокументаNavigation = (medicineContext.ТипДокументацииs.Where(f => f.Название == NameOfToggleButton).FirstOrDefault());
+            приходРасходadd.СкладNavigation = medicineContext.Складыs.Where(f => f.Название == SelectedItemScladi).FirstOrDefault();
+            приходРасходadd.ПодразделениеNavigation =medicineContext.Бригадыs.Where(f => f.Название == SelecteditemPodrazd).FirstOrDefault();
+            приходРасходadd.Название = NameOfDoc;
+
+
+           
+
+            medicineContext.ПриходРасходs.Add(приходРасходadd);
+            medicineContext.SaveChanges();
+            ДокументыВещи документыВещиadd = new ДокументыВещи();
+            документыВещиadd.НаименованиеЦенностиNavigation = medicineContext.НаименованиеЛекарственныхСредствs.Where(f=> f.Id ==SelectedIndCennsoti + 1).FirstOrDefault();
+            документыВещиadd.Количество = Convert.ToInt32(KolvoTextbox);
+            документыВещиadd.ДокументNavigation = приходРасходadd;
+            medicineContext.ДокументыВещиs.Add(документыВещиadd);
+            medicineContext.SaveChanges();
 
         }
         public SecondVM(/*Model model*/)

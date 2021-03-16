@@ -34,7 +34,7 @@ namespace PredpriyatieProject.ViewModels
                 Date = DateTime.Now
             };
 
-        public FirstVM firstVM { get; } = new FirstVM { dateTimesecond = DateTime.Today, dateTime = DateTime.Today, TextForSearch ="", AmbulatoriList=new List<Tabels.StorageList>(), GlList = new List<Tabels.StorageList>(), GorodList = new List<Tabels.StorageList>(), VolnoList = new List<Tabels.StorageList>()};
+        public FirstVM firstVM { get; set; } = new FirstVM { dateTimesecond = DateTime.Today, dateTime = DateTime.Today, TextForSearch =""};
         
 
     }

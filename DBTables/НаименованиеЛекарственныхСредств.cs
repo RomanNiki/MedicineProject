@@ -21,5 +21,10 @@ namespace PredpriyatieProject
         public virtual ЕдиницыИзмерения ЕдиницаИзмеренияNavigation { get; set; }
         public virtual ICollection<Rof> Rofs { get; set; }
         public virtual ICollection<ДокументыВещи> ДокументыВещиs { get; set; }
+
+        internal object GroupBy(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

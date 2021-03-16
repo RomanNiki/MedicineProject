@@ -24,7 +24,7 @@ namespace PredpriyatieProject
         public virtual DbSet<ЕдиницыИзмерения> ЕдиницыИзмеренияs { get; set; }
         public virtual DbSet<НаименованиеЛекарственныхСредств> НаименованиеЛекарственныхСредствs { get; set; }
         public virtual DbSet<ПриходРасход> ПриходРасходs { get; set; }
-        public virtual DbSet<Приходвсе> Приходвсеs { get; set; }
+        public virtual DbSet<Приходвсего> Приходвсеs { get; set; }
         public virtual DbSet<Склады> Складыs { get; set; }
         public virtual DbSet<ТипДокументации> ТипДокументацииs { get; set; }
         public virtual DbSet<УходВсе> УходВсеs { get; set; }
@@ -151,13 +151,13 @@ namespace PredpriyatieProject
                     .HasConstraintName("Приход\\Расход$Названия документовПриход\\Расход");
             });
 
-            modelBuilder.Entity<Приходвсе>(entity =>
+            modelBuilder.Entity<Приходвсего>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("Приходвсе");
+                entity.ToView("Приходвсего");
 
-                entity.Property(e => e.SumКоличество).HasColumnName("Sum-Количество");
+                entity.Property(e => e.SumКоличество).HasColumnName("Количество");
 
                 entity.Property(e => e.НаименованиеЦенностей)
                     .HasMaxLength(255)
@@ -184,9 +184,9 @@ namespace PredpriyatieProject
             {
                 entity.HasNoKey();
 
-                entity.ToView("УходВсе");
+                entity.ToView("УходВсего");
 
-                entity.Property(e => e.SumКоличество).HasColumnName("Sum-Количество");
+                entity.Property(e => e.SumКоличество).HasColumnName("Количество");
 
                 entity.Property(e => e.НаименованиеЦенностей)
                     .HasMaxLength(255)

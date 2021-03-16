@@ -25,14 +25,14 @@
         <ToggleButton Style="{DynamicResource ToggleButtonStyle1}" Margin="5" Grid.ColumnSpan="3" Content="{Binding NameOfToggleButton}" IsChecked="{Binding IsChechedAddWind}"/>
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
             <Label FontSize="13" Height="26" Content="Склад"/>
-            <ComboBox Width="210" FontSize="20" x:Name="Склад" Height="30" ItemsSource="{Binding ComboboxScladi}" SelectedIndex="0" SelectedValue="{Binding SelectedItemScladi}"></ComboBox>
+            <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210" FontSize="20" x:Name="Склад" Height="30" ItemsSource="{Binding ComboboxScladi}" SelectedIndex="0" SelectedValue="{Binding SelectedItemScladi}"></ComboBox>
             <Label FontSize="13" Height="26" Content="Подразделение"/>
             <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210" FontSize="20" x:Name="Подразделения" Height="30" ItemsSource="{Binding ComboboxPodrazdeleniya}" SelectedValue="{Binding SelecteditemPodrazd}" SelectedIndex="16"  ></ComboBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center">
             <Label FontSize="12" Height="26" Content="Наименование ценности"/>
-            <ComboBox  Width="210"
+            <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210"
           IsTextSearchEnabled="True"   IsEditable="False" FontSize="20" x:Name="Лекарства" Height="30"  SelectedIndex="{Binding SelectedIndCennsoti}" ItemsSource="{Binding ComboboxNazvLecarstvХ}"></ComboBox>
             <Label FontSize="13" Height="26" Content="Количество"/>
             <TextBox Width="210" FontSize="20" x:Name="NameOfMedicine" Style="{StaticResource TextBoxStyle1}"  PreviewTextInput="NumericOnly" Height="30" Text="{Binding KolvoTextbox}"></TextBox>
@@ -46,7 +46,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Bottom">
-            <Button Width="210" Style="{StaticResource ButtonStyle1}" FontSize="14" Height="55" Content="Добавить" ></Button>
+            <Button Width="210" Style="{StaticResource ButtonStyle1}" Command="{Binding Addbutt}" FontSize="14" Height="55" Content="Добавить" ></Button>
         </StackPanel>
     </Grid>
 </Window>

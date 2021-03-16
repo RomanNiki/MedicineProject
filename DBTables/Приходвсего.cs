@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PredpriyatieProject
 {
-    public partial class Приходвсе
+    public partial class Приходвсего
     {
         public string НаименованиеЦенностей { get; set; }
         public int? SumКоличество { get; set; }
