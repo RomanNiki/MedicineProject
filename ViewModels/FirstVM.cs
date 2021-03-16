@@ -16,9 +16,9 @@ namespace PredpriyatieProject.ViewModels
 
      
         private DateTime _dateTime;
-        public DateTime dateTime { get => _dateTime; set => SetProperty(ref _dateTime, value); }  
+        public DateTime dateTime { get => _dateTime; set { SetProperty(ref _dateTime, value); RefreshTable.Execute(RefreshTable); } }  
         private DateTime _dateTimesecond;
-        public DateTime dateTimesecond { get => _dateTimesecond; set { SetProperty(ref _dateTimesecond, value); } }
+        public DateTime dateTimesecond { get => _dateTimesecond; set { SetProperty(ref _dateTimesecond, value); RefreshTable.Execute(RefreshTable); } }
 
         MedicineContext MedCont = new MedicineContext();
         public List<Приходвсего> PrihodVse { get; set; }
@@ -43,38 +43,30 @@ namespace PredpriyatieProject.ViewModels
                  var group = MedCont.НаименованиеЛекарственныхСредствs.Local.Join(MedCont.ДокументыВещиs.Local, x => x.Id, x => x.НаименованиеЦенности, (x, y) => new { doc = y.Документ, name = x.НаименованиеЦенностей, kol = y.Количество });
                  var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol, date = x.Дата });
                  var filter = gr2.Where(x => (x.type == 1) && (x.slad == 4) && x.date >= dateTime).AsEnumerable();
-                 var gruped = filter.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = y.Select(x => x.kol).Sum() });
+                 var gruped = filter.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = y.Select(x => x.kol).Sum(), date = y.Select(x=>x.date) });
 
                  GlList = gruped;
              } ); }
          }
         RelayCommand a = new RelayCommand(()=> { });
+        public ICommand Addbutte
+        {
+            get
+            {
+                return new RelayCommand(() => {
+                  
+                });
+            }
+        }
+      
 
-        //void RefreshTable()
-        //{
-        //    int ostatok = 0;
-         
-        //    MedCont.НаименованиеЛекарственныхСредствs.Load();
-        //    MedCont.ДокументыВещиs.Load();
-        //    MedCont.ПриходРасходs.Load();
 
-        //    var group = MedCont.НаименованиеЛекарственныхСредствs.Local.Join(MedCont.ДокументыВещиs.Local, x => x.Id, x => x.НаименованиеЦенности, (x, y) => new { doc = y.Документ, name = x.НаименованиеЦенностей, kol = y.Количество});
-        //    var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol,date = x.Дата });
-        //    var filter = gr2.Where(x => (x.type == 1) && (x.slad == 4) && x.date >= dateTime).AsEnumerable();
-        //    var gruped = filter.GroupBy(x => x.name, (x,y) => new { Name = x, Kol = y.Select(x => x.kol).Sum() });
-
-        //    GlList = gruped;
-
-            
-        //}
-
-     
 
         public FirstVM()
         {
 
             a.Execute(RefreshTable);
-
+              
 
             OpenNewaddWindow = new DelegateCommand(() => { AddWind addWind = new AddWind(); addWind.ShowDialog();  });
             ResultForDate = new DelegateCommand(() => {  MessageBox.Show(dateTimesecond.ToString()); });
