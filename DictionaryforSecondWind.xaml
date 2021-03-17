@@ -472,7 +472,7 @@
     
     <Style x:Key="ToggleButtonStyle1" TargetType="{x:Type ToggleButton}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-        <Setter Property="Background" Value="#EFEFF2"/>
+        <Setter Property="Background" Value="#EFEff9"/>
         <Setter Property="BorderBrush" Value="LightGray"/>
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="BorderThickness" Value="1"/>

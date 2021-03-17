@@ -20,10 +20,15 @@ namespace PredpriyatieProject.ViewModels
                 IntegerData = intValue;
                 StringData = strValue;
             }
-
+            public Data(string strValue, int intValue, int id)
+            {
+                IntegerData = intValue;
+                StringData = strValue;
+                this.id = id;
+            }
             public int IntegerData { get; set; }
             public string StringData { get; set; }
-
+            public int id { get; set; }
 
         }
 
@@ -62,9 +67,9 @@ namespace PredpriyatieProject.ViewModels
                     MedCont.ТипДокументацииs.Load();
                     MedCont.Складыs.Load();
 
-                    var group = MedCont.НаименованиеЛекарственныхСредствs.Local.Join(MedCont.ДокументыВещиs.Local, x => x.Id, x => x.НаименованиеЦенности, (x, y) => new { doc = y.Документ, name = x.НаименованиеЦенностей, kol = y.Количество });
-                    var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol, date = x.Дата });
-
+                    var group = MedCont.НаименованиеЛекарственныхСредствs.Local.Join(MedCont.ДокументыВещиs.Local, x => x.Id, x => x.НаименованиеЦенности, (x, y) => new { doc = y.Документ, name = x.НаименованиеЦенностей, kol = y.Количество ,ide = x.ЕдиницаИзмерения});
+                    var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol, date = x.Дата, id = y.ide });
+                   
 
 
                     var filterstartForOstatok = gr2.Where(x => (x.type == 1) && (x.slad == 4) && x.date <= dateTimeStart).AsEnumerable();
@@ -77,7 +82,7 @@ namespace PredpriyatieProject.ViewModels
 
 
                     var grupedend = filterend.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
-                    var grupedstart = filterstart.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
+                    var grupedstart = filterstart.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()), id =Int32.Parse( y.Select(x => x.id).FirstOrDefault().ToString()) }).ToList();
 
 
 
@@ -107,7 +112,8 @@ namespace PredpriyatieProject.ViewModels
 
                     foreach (var item1 in grupedstart)
                     {
-                        prihod.Add(new Data(item1.Name, item1.Kol));
+                        MessageBox.Show(item1.id.ToString());
+                        prihod.Add(new Data(item1.Name, item1.Kol,Int32.Parse(item1.id.ToString())));
                     }
 
 
@@ -130,7 +136,8 @@ namespace PredpriyatieProject.ViewModels
                         int prihoditem = Int32.Parse(grupedstart.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
                         int rashoditem = Int32.Parse(grupedend.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
                         int ostatokonStartLocal = Int32.Parse(ostatokOnStarListt.Where(x => x.StringData == item.StringData).Select(x => x.IntegerData).FirstOrDefault().ToString());
-                        GlList.Add(new StorageList(item.StringData, "", "", ostatokonStartLocal, "", prihoditem, rashoditem));
+                        string EdIzm = MedCont.НаименованиеЛекарственныхСредствs.Join(MedCont.ЕдиницыИзмеренияs, x => x.ЕдиницаИзмерения, y => y.Код, (x, y) => new { edizmint = x.ЕдиницаИзмерения, edizmItem = y.ЕдИзмерения }).Where(x=>x.edizmint == item.id).Select(x => x.edizmItem).FirstOrDefault().ToString();
+                        GlList.Add(new StorageList(item.StringData, EdIzm, "", ostatokonStartLocal, "", prihoditem, rashoditem));
                     }
 
                 });
