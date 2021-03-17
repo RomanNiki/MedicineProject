@@ -40,9 +40,9 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
             <StackPanel Height="92">
                 <Label Content="На начало"   VerticalAlignment="Center" Height="23"></Label>
-                <DatePicker Height="23" Style="{StaticResource DatePickerStyle1}" SelectedDate="{Binding dateTimesecond,UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Content="На конец"  Height="23"></Label>
-                <DatePicker Height="23" Style="{StaticResource DatePickerStyle1}" SelectedDate="{Binding dateTime,UpdateSourceTrigger=PropertyChanged}"/>
+                <DatePicker Height="23" Style="{StaticResource DatePickerStyle1}" SelectedDate="{Binding dateTimeStart,UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="На конец" Margin="1"  Height="23"></Label>
+                <DatePicker Height="23" Style="{StaticResource DatePickerStyle1}" SelectedDate="{Binding dateTimeEnd,UpdateSourceTrigger=PropertyChanged}"/>
                 
             </StackPanel>
             <Button Style="{DynamicResource ButtonStyle1}" Content="Вычеслить"  Height="50" Margin="2" Width="100" Command="{Binding Addbutte}"/>

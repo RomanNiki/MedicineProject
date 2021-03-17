@@ -34,7 +34,7 @@ namespace PredpriyatieProject.ViewModels
                 Date = DateTime.Now
             };
 
-        public FirstVM firstVM { get; set; } = new FirstVM { dateTimesecond = DateTime.Today, dateTime = DateTime.Today, TextForSearch =""};
+        public FirstVM firstVM { get; set; } = new FirstVM { dateTimeEnd = DateTime.Today, dateTimeStart = DateTime.Today.AddDays(-7), TextForSearch =""};
         
 
     }
