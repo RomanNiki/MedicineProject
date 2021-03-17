@@ -26,7 +26,7 @@
         </Border>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
-            <DatePicker SelectedDate="{Binding dateTimesecond,UpdateSourceTrigger=PropertyChanged}"/>
+            <DatePicker SelectedDate="{Binding dateTimeEnd,UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         
     </Grid>

@@ -17,6 +17,7 @@ namespace PredpriyatieProject.ViewModels
         private DateTime _dateOfDoc;
         private string _kolvoTextbox;
         //private readonly Model model;
+
         private string _selecteditemPodrazd;
         public string SelectedItemScladi { get => _selectedItemScladi; set => ComboboxPodrazdeleniyaHelper(value); }
         public string NameOfDoc { get => _nameOfDoc; set => SetProperty(ref _nameOfDoc, value); }
@@ -42,7 +43,7 @@ namespace PredpriyatieProject.ViewModels
         }
         public string SelecteditemPodrazd { get => _selecteditemPodrazd;  set => SetProperty(ref _selecteditemPodrazd, value); }
         public int SelectedIndCennsoti { get; set; } = 0;
-        MedicineContext medicineContext = new MedicineContext();
+        MedicineContext medicineContext = FirstVM.MedCont;
         private string nameOfToggleButton = "Приход";
         private bool isChechedAddWind;
         public IEnumerable<string> ComboboxPodrazdeleniya { get; set; } 
@@ -75,7 +76,12 @@ namespace PredpriyatieProject.ViewModels
             приходРасходadd.Дата = DateOfDoc;
 
             //     приходРасходadd.ТипДокумента = Int32.Parse(medicineContext.ТипДокументацииs.Where(f => f.Название == NameOfToggleButton).Select(f => f.Id).ToQueryString());
-
+            medicineContext.НаименованиеЛекарственныхСредствs.Load();
+            medicineContext.ДокументыВещиs.Load();
+            medicineContext.ПриходРасходs.Load();
+            medicineContext.Rofs.Load();
+            medicineContext.ТипДокументацииs.Load();
+            medicineContext.Складыs.Load();
 
             приходРасходadd.ТипДокументаNavigation = (medicineContext.ТипДокументацииs.Where(f => f.Название == NameOfToggleButton).FirstOrDefault());
             приходРасходadd.СкладNavigation = medicineContext.Складыs.Where(f => f.Название == SelectedItemScladi).FirstOrDefault();
@@ -93,6 +99,8 @@ namespace PredpriyatieProject.ViewModels
             документыВещиadd.ДокументNavigation = приходРасходadd;
             medicineContext.ДокументыВещиs.Add(документыВещиadd);
             medicineContext.SaveChanges();
+      
+            
 
         }
         public SecondVM(/*Model model*/)

@@ -33,8 +33,8 @@ namespace PredpriyatieProject.ViewModels
             {
                 Date = DateTime.Now
             };
-
-        public FirstVM firstVM { get; set; } = new FirstVM { dateTimeEnd = DateTime.Today, dateTimeStart = DateTime.Today.AddDays(-7), TextForSearch =""};
+        //DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)
+        public FirstVM firstVM { get; set; } = new FirstVM { dateTimeEnd =  DateTime.Today, dateTimeStart = new DateTime( DateTime.Today.Year,DateTime.Today.Month,1), TextForSearch =""};
         
 
     }

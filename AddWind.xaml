@@ -46,7 +46,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Bottom">
-            <Button Width="210" Style="{StaticResource ButtonStyle1}" Command="{Binding Addbutt}" FontSize="14" Height="55" Content="Добавить" ></Button>
+            <Button Width="210" Style="{StaticResource ButtonStyle1}"  Command="{Binding Addbutt}" FontSize="14" Height="55" Content="Добавить" ></Button>
         </StackPanel>
     </Grid>
 </Window>

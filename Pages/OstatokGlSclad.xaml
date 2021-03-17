@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="3" Grid.RowSpan="5" Background="#EFEFF2"/>
         <Border Grid.ColumnSpan="2">
-            <DataGrid Style="{DynamicResource DataGridStyle1}"   ItemsSource="{Binding Path=GlList, UpdateSourceTrigger=PropertyChanged}" CanUserAddRows="False" AutoGenerateColumns="True" ColumnWidth="*"  >
+            <DataGrid Style="{DynamicResource DataGridStyle1}"   ItemsSource="{Binding Path=GlList, UpdateSourceTrigger=PropertyChanged}" CanUserAddRows="False" AutoGenerateColumns="False" ColumnWidth="*"  >
            
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Наименование ценности" Binding="{Binding Название_ценности}" ></DataGridTextColumn>
