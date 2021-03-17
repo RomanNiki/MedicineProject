@@ -103,8 +103,9 @@ namespace PredpriyatieProject.ViewModels
             
 
         }
-        public SecondVM(/*Model model*/)
+        public SecondVM()
         {
+       
             KolvoTextbox = "1";
             DateOfDoc = DateTime.Today;
            

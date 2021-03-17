@@ -39,7 +39,7 @@ namespace PredpriyatieProject.ViewModels
         public List<Приходвсего> PrihodVse { get; set; }
         public List<УходВсе> UhodVse { get; set; }
 
-        static public List<StorageList> GlList { get; set; } = new List<StorageList>();
+         public List<StorageList> GlList { get; set; } = new List<StorageList>();
         public List<StorageList> AmbulatoriList { get; set; }
         public List<StorageList> GorodList { get; set; }
         public List<StorageList> VolnoList { get; set; }
@@ -136,6 +136,7 @@ namespace PredpriyatieProject.ViewModels
                 });
             }
         }
+     
         public ICommand Addbutte
         {
             get
@@ -154,7 +155,7 @@ namespace PredpriyatieProject.ViewModels
         {
 
             RefreshTable.Execute(RefreshTable);
-            OpenNewaddWindow = new DelegateCommand(() => { AddWind addWind = new AddWind();  addWind.ShowDialog();  RefreshTable.Execute(RefreshTable); });
+            OpenNewaddWindow = new DelegateCommand(() => { AddWind addWind = new AddWind();   addWind.ShowDialog();  RefreshTable.Execute(RefreshTable); });
             ResultForDate = new DelegateCommand(() => { MessageBox.Show(dateTimeEnd.ToString()); });
 
         }

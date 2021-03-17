@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PredpriyatieProject" xmlns:lctr="clr-namespace:PredpriyatieProject.ViewModels"
         mc:Ignorable="d"
-        Title="AddWind" Height="450" Width="500" MaxHeight="450" MaxWidth="500" MinHeight="450" Style="{StaticResource VS2012WindowStyle1}" MinWidth="500"  ResizeMode="NoResize">
+        Title="AddWind" Height="450" Width="500" MaxHeight="450" MaxWidth="500" MinHeight="450" Style="{StaticResource VS2012WindowStyle1}" MinWidth="500"  ResizeMode="NoResize" >
     <Window.DataContext>
         <lctr:SecondVM></lctr:SecondVM>
     </Window.DataContext>
@@ -46,7 +46,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Bottom">
-            <Button Width="210" Style="{StaticResource ButtonStyle1}"  Command="{Binding Addbutt}" FontSize="14" Height="55" Content="Добавить" ></Button>
+            <Button Width="210" Style="{StaticResource ButtonStyle1}"  Command="{Binding Addbutt}" FontSize="14" Height="55" Content="Добавить"></Button>
         </StackPanel>
     </Grid>
 </Window>
