@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using Microsoft.EntityFrameworkCore;
 using PredpriyatieProject.Tabels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -29,11 +30,12 @@ namespace PredpriyatieProject.ViewModels
             public int IntegerData { get; set; }
             public string StringData { get; set; }
             public int id { get; set; }
-
+           
         }
-
+    
+        
         static byte _kostile;
-        public byte kostile { get => _kostile; set { _kostile = value; RefreshTable.Execute(RefreshTable); } }
+        public static byte kostile { get => _kostile; set { _kostile = value; } }
       
         private DateTime _dateTime;
         public DateTime dateTimeStart { get => _dateTime; set { SetProperty(ref _dateTime, value); RefreshTable.Execute(RefreshTable); } }
@@ -53,12 +55,15 @@ namespace PredpriyatieProject.ViewModels
 
         public string TextForSearch { get => _textForSearch; set => SetProperty(ref _textForSearch, value); }
         private string _textForSearch;
+    
+       
         public ICommand RefreshTable
         {
             get
             {
                 return new RelayCommand(() =>
                 {
+                    //Загрузка данных 
                     GlList = new List<StorageList>();
                     MedCont.НаименованиеЛекарственныхСредствs.Load();
                     MedCont.ДокументыВещиs.Load();
@@ -67,33 +72,38 @@ namespace PredpriyatieProject.ViewModels
                     MedCont.ТипДокументацииs.Load();
                     MedCont.Складыs.Load();
 
+
+                    //Соединение таблиц
                     var group = MedCont.НаименованиеЛекарственныхСредствs.Local.Join(MedCont.ДокументыВещиs.Local, x => x.Id, x => x.НаименованиеЦенности, (x, y) => new { doc = y.Документ, name = x.НаименованиеЦенностей, kol = y.Количество ,ide = x.ЕдиницаИзмерения});
                     var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol, date = x.Дата, id = y.ide });
-                   
 
 
-                    var filterstartForOstatok = gr2.Where(x => (x.type == 1) && (x.slad == 4) && x.date <= dateTimeStart).AsEnumerable();
-                    var fitterendForOstatok = gr2.Where(x => (x.type == 2) && (x.slad == 4) && x.date <= dateTimeStart).AsEnumerable();
-
-
+                    //Выборка для определения остатка на начало
+                    var filterstartForOstatok = gr2.Where(x => (x.type == 1) && (x.slad == kostile) && x.date <= dateTimeStart).AsEnumerable();
+                    var fitterendForOstatok = gr2.Where(x => (x.type == 2) && (x.slad == kostile) && x.date <= dateTimeStart).AsEnumerable();
+               
+                    //Выборки для получение текущих приходов расходов
                     var filterstart = gr2.Where(x => (x.type == 1) && (x.slad == 4) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
                     var filterend = gr2.Where(x => (x.type == 2) && (x.slad == 4) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
 
 
-
+                    //Группировка по имени ценности
                     var grupedend = filterend.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
                     var grupedstart = filterstart.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()), id =Int32.Parse( y.Select(x => x.id).FirstOrDefault().ToString()) }).ToList();
 
 
-
+                    //тоже самое только для остатка на начало
                     var ostatokGruppedstart = filterstartForOstatok.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
                     var ostaokGruppedEnd = fitterendForOstatok.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
 
 
-
+                    //Лист для получение текущих приходов расходов
                     List<Data> prihod = new List<Data>();
+                    //Лист для остатка на начало
                     List<Data> ostatokOnStarListt = new List<Data>();
 
+
+                    //заполнение листа и определ остатка на начало
                     foreach (var start in ostatokGruppedstart)
                     {
                         int k = 0;
@@ -109,28 +119,28 @@ namespace PredpriyatieProject.ViewModels
 
 
 
-
+                    //Лист для получение текущих приходов расходов
                     foreach (var item1 in grupedstart)
                     {
-                        MessageBox.Show(item1.id.ToString());
+                      //  MessageBox.Show(item1.id.ToString());
                         prihod.Add(new Data(item1.Name, item1.Kol,Int32.Parse(item1.id.ToString())));
                     }
 
 
+                    //Зачем?
+                    //for (int i = 0; i < prihod.Count; i++)
+                    //{
+                    //    foreach (var item in grupedend)
+                    //    {
+                    //        if (item.Name == prihod[i].StringData)
+                    //        {
+                    //            prihod[i].IntegerData -= item.Kol;
+                    //        }
+                    //    }
+                    //}
 
-                    for (int i = 0; i < prihod.Count; i++)
-                    {
-                        foreach (var item in grupedend)
-                        {
-                            if (item.Name == prihod[i].StringData)
-                            {
-                                prihod[i].IntegerData -= item.Kol;
-                            }
-                        }
-                    }
 
-
-
+                    //Заполнение таблицы 
                     foreach (var item in prihod)
                     {
                         int prihoditem = Int32.Parse(grupedstart.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
@@ -150,7 +160,7 @@ namespace PredpriyatieProject.ViewModels
             {
                 return new RelayCommand(() =>
                 {
-
+                    MessageBox.Show(kostile.ToString());
                 });
             }
         }

@@ -25,7 +25,8 @@
             <DataGrid  />
         </Border>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1">
+            <Button Command="{Binding Addbutte}" Height="40" Margin="1"/>
             <DatePicker SelectedDate="{Binding dateTimeEnd,UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         

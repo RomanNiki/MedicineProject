@@ -35,25 +35,26 @@ class Navigation : ViewModelBase
         
             CurrentPage = GlSklad;
             NameOfWindow = "  Главный склад  ";
+            FirstVM.kostile = 4;
         }
 
         public string NameOfWindow { get; set; }
 
         public ICommand Gorodishee
         {
-            get { return new RelayCommand(() => { SlowOpacity(Gorodishe); NameOfWindow = "  Городище  "; } ) ; }
+            get { return new RelayCommand(() => { SlowOpacity(Gorodishe); NameOfWindow = "  Городище  "; FirstVM.kostile = 3; } ) ; }
         }
         public ICommand GlSclad
         {
-            get { return new RelayCommand(() => { SlowOpacity(GlSklad); NameOfWindow = "  Главный склад  "; }); }
+            get { return new RelayCommand(() => { SlowOpacity(GlSklad); NameOfWindow = "  Главный склад  "; FirstVM.kostile = 4; }); }
         }
         public ICommand Voln
         {
-            get { return new RelayCommand(() => {SlowOpacity(Volno); NameOfWindow = "  Вольно  "; }); }
+            get { return new RelayCommand(() => {SlowOpacity(Volno); NameOfWindow = "  Вольно  ";  FirstVM.kostile = 2; }); }
         }
         public ICommand Brigad
         {
-            get { return new RelayCommand(() => { SlowOpacity(Brigadi); NameOfWindow = "  Бригады  "; }); }
+            get { return new RelayCommand(() => { SlowOpacity(Brigadi); NameOfWindow = "  Амбулатория  "; FirstVM.kostile = 1; }); }
         }
         private async void SlowOpacity(Page page)
         {
