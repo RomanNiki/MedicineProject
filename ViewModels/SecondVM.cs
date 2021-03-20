@@ -21,7 +21,7 @@ namespace PredpriyatieProject.ViewModels
         private string _selecteditemPodrazd;
         public string SelectedItemScladi { get => _selectedItemScladi; set => ComboboxPodrazdeleniyaHelper(value); }
         public string NameOfDoc { get => _nameOfDoc; set => SetProperty(ref _nameOfDoc, value); }
-
+        public  List<string> NameOfDOcumentList { get; set; }
         public DateTime DateOfDoc { get => _dateOfDoc; set => SetProperty(ref _dateOfDoc, value); }
         public string KolvoTextbox { get => _kolvoTextbox;  set => SetProperty(ref _kolvoTextbox, value); }
         void ComboboxPodrazdeleniyaHelper(string value)

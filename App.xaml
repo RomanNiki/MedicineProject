@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:PredpriyatieProject" xmlns:lctr="clr-namespace:PredpriyatieProject.ViewModels" 
 
              StartupUri="MainWindow.xaml">
+    <!--MainWindow.xaml-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
