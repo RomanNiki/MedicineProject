@@ -15,6 +15,13 @@ namespace PredpriyatieProject
             {
                 
             }
+
+          НаименованиеЛекарственныхСредствs.Load();
+          ДокументыВещиs.Load();
+          ПриходРасходs.Load();
+          Rofs.Load();
+          ТипДокументацииs.Load();
+          Складыs.Load();
         }
 
         public MedicineContext(DbContextOptions<MedicineContext> options)

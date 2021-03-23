@@ -31,12 +31,13 @@ class Navigation : ViewModelBase
             Gorodishe = new Pages.OstatokGorodishe();
             GlSklad = new Pages.OstatokGlSclad();
             Volno = new Pages.OstatokVolono();
-            Brigadi = new Pages.OstatokBrigadi();
+            Brigadi = new Pages.OstatokBrigadi(); 
         
             CurrentPage = GlSklad;
             NameOfWindow = "  Главный склад  ";
             FirstVM.kostile = 4;
         }
+        public bool IsLeftDrawerOpen { get; set; }
 
         public string NameOfWindow { get; set; }
 

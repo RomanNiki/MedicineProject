@@ -4,38 +4,81 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lctr="clr-namespace:PredpriyatieProject.ViewModels"
+        xmlns:Thems="clr-namespace:MaterialDesignThemes.Wpf.Converters.CircularProgressBar;assembly=MaterialDesignThemes.Wpf"
+        xmlns:materialdesigns="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="{Binding NameOfWindow}" Height="485" Width="800"  MinHeight="485" MinWidth="800"   Style="{StaticResource VS2012WindowStyle}">
+        Height="500" Width="800"  MinHeight="500" MinWidth="800"  Style="{DynamicResource VS2012WindowStyle}" Title="{Binding NameOfWindow}" Background="#fff">
     
     <Window.DataContext>
         <lctr:Navigation/>
     </Window.DataContext>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="0.3*" MaxWidth="170"/>
-            <ColumnDefinition Width="*"/>
-           
-            <ColumnDefinition Width="10"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
+
+    <materialdesigns:DrawerHost Grid.Column="0" Grid.RowSpan="3" LeftDrawerBackground="{DynamicResource MaterialDesignPaper}"  x:Name="DrawerHost">
             
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="0.3*" />
+            <materialdesigns:DrawerHost.LeftDrawerContent >
+
+            <StackPanel  Margin="3"  Width="150">
+                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                              IsChecked="{Binding IsLeftDrawerOpen, ElementName=DrawerHost}"
+                              HorizontalAlignment="Right"/>
+
+                <Button  x:Name="but1" Height="25"  Content="Главный склад" Command="{Binding GlSclad, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                <Button x:Name="but2" Height="25" Content="Городечно" Command="{Binding Gorodishee, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                <Button x:Name="but3" Height="25"  Content="Вольно" Command="{Binding Voln, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                        <Button x:Name="but4" Height="25" Content="Амбулатория" Command="{Binding Brigad, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                        
+                    <Border Background="Transparent" Grid.ColumnSpan="3" Grid.Row="1" Height="1" ></Border>
+
+                   
+                </StackPanel>
+            </materialdesigns:DrawerHost.LeftDrawerContent>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Frame  Grid.ColumnSpan="2"  Grid.Row="2" Grid.Column="0" NavigationUIVisibility="Hidden" x:Name="Frame1" Content="{Binding  CurrentPage}" Opacity="{Binding Opacity}" Foreground="{x:Null}" />
+            <materialdesigns:ColorZone Grid.ColumnSpan="2" Padding="5" Mode="Standard">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                  IsChecked="{Binding IsLeftDrawerOpen, ElementName=DrawerHost}"
+                                  HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="WebSource"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Center" 
+                               Grid.Column="1" />
+                    <StackPanel HorizontalAlignment="Right" Margin="0 ,0,20,0" Grid.Column="1" >
+                     
+                        <TextBox  Style="{StaticResource MaterialDesignTextBox}" materialdesigns:HintAssist.Hint="Поиск" Text="{Binding  firstVM.TextForSearch,UpdateSourceTrigger=PropertyChanged, Source={StaticResource Locator}}"   FontSize="12pt" Width="100" Name="SearchBox"/>
+
+
+                    </StackPanel>
+
+                </Grid>
+            </materialdesigns:ColorZone>
+
+         
+        </Grid>
+
+     
+    </materialdesigns:DrawerHost>
+      
+        <!--<ScrollViewer Grid.Row="2" Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+            
+        </ScrollViewer>-->
+
+   
         
-        </Grid.RowDefinitions>
-        <Frame  Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1" NavigationUIVisibility="Hidden" x:Name="Frame1" Content="{Binding  CurrentPage}" Opacity="{Binding Opacity}" />
-        <ScrollViewer Grid.Row="2" Grid.Column="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-            <StackPanel VerticalAlignment="Bottom" Margin="3"  >
-                <Button  x:Name="but1" Height="24"  Content="Главный склад" Command="{Binding GlSclad, IsAsync=True}" Style="{DynamicResource ButtonStyle1}"/>
-                <Button x:Name="but2" Height="24" Content="Городечно" Command="{Binding Gorodishee, IsAsync=True}" Style="{DynamicResource ButtonStyle1}"/>
-                <Button x:Name="but3" Height="24"  Content="Вольно" Command="{Binding Voln, IsAsync=True}" Style="{DynamicResource ButtonStyle1}"/>
-                <Button x:Name="but4" Height="24" Content="Амбулатория" Command="{Binding Brigad, IsAsync=True}" Style="{DynamicResource ButtonStyle1}"/>
-            </StackPanel>
-          
-        </ScrollViewer>
       
 
-    </Grid>
+  
 </Window>

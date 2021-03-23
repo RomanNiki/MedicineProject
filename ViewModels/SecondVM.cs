@@ -10,8 +10,26 @@ using System.Windows.Input;
 
 namespace PredpriyatieProject.ViewModels
 {
+    public class Doctype
+    {
+
+        public Doctype(string name, string typeSTR,int iddoc,DateTime date)
+        {
+            Name = name;
+            TypeSTR = typeSTR;
+            idDoc = iddoc;
+            Date = date;
+        }
+
+        public string Name { get; set; }
+      public int idDoc { get; set; }
+        public string TypeSTR { get; set; }
+        public DateTime Date { get; set; }
+
+    }
     public class SecondVM : OnPropertyChangedClass 
     {
+       
         private string _selectedItemScladi;
         private string _nameOfDoc;
         private DateTime _dateOfDoc;
@@ -19,13 +37,14 @@ namespace PredpriyatieProject.ViewModels
         //private readonly Model model;
 
         private string _selecteditemPodrazd;
-        public string SelectedItemScladi { get => _selectedItemScladi; set => ComboboxPodrazdeleniyaHelper(value); }
+        public string SelectedItemScladi { get => _selectedItemScladi; set => ComboboxPodrazdeleniyaHelper(value);  }
         public string NameOfDoc { get => _nameOfDoc; set => SetProperty(ref _nameOfDoc, value); }
         public  List<string> NameOfDOcumentList { get; set; }
         public DateTime DateOfDoc { get => _dateOfDoc; set => SetProperty(ref _dateOfDoc, value); }
         public string KolvoTextbox { get => _kolvoTextbox;  set => SetProperty(ref _kolvoTextbox, value); }
         void ComboboxPodrazdeleniyaHelper(string value)
         {
+            
             switch (value)
                 {
                 case "Амбулатория":
@@ -90,7 +109,6 @@ namespace PredpriyatieProject.ViewModels
 
 
            
-
             medicineContext.ПриходРасходs.Add(приходРасходadd);
             medicineContext.SaveChanges();
             ДокументыВещи документыВещиadd = new ДокументыВещи();
@@ -103,14 +121,26 @@ namespace PredpriyatieProject.ViewModels
             
 
         }
+        public DelegateCommand OpenNewaddWindow { get; set; }
         public SecondVM()
         {
-       
+            listOfDOcs = new List<Doctype>();
+            OpenNewaddWindow = new DelegateCommand(() => { AddChangeDocument addWind = new AddChangeDocument(); addWind.ShowDialog(); });
             KolvoTextbox = "1";
-            DateOfDoc = DateTime.Today;
-           
+            DateOfDoc = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
+            RefreshTable();
         }
 
+        void RefreshTable()
+        {
+            DateTime dateTimeStart = new DateTime(DateOfDoc.Year, DateOfDoc.Month, 1);
+            var ae = medicineContext.ПриходРасходs.Where(x => x.Дата >= DateOfDoc&&x.Склад== 4/*medicineContext.Складыs.Where(x=>x.Название==SelectedItemScladi).Select(x=>x.Id).FirstOrDefault()*/).Select(x=> new {id =x.Id, name = x.Название,type =x.ТипДокументаNavigation.Название,date = x.Дата });
+            foreach (var item in ae)
+                listOfDOcs.Add(new Doctype(item.name, item.type,item.id,(DateTime)item.date));
+        
+        }
+
+        public List<Doctype> listOfDOcs { get; set; }
         //private void ModelValueChanged(object sender, string valueName, object oldValue, object newValue)
         //{
         //    switch (valueName)

@@ -41,36 +41,45 @@ namespace PredpriyatieProject.ViewModels
         public DateTime dateTimeStart { get => _dateTime; set { SetProperty(ref _dateTime, value); RefreshTable.Execute(RefreshTable); } }
         private DateTime _dateTimesecond;
         public DateTime dateTimeEnd { get => _dateTimesecond; set { SetProperty(ref _dateTimesecond, value); RefreshTable.Execute(RefreshTable); } }
-
+     
         public static MedicineContext MedCont = new MedicineContext();
         public List<Приходвсего> PrihodVse { get; set; }
         public List<УходВсе> UhodVse { get; set; }
-
-         public List<StorageList> GlList { get; set; } = new List<StorageList>();
+        private List<StorageList> _GlList;
+         public List<StorageList> GlList { get=>_GlList; set { SetProperty(ref _GlList, value); } } 
         public List<StorageList> AmbulatoriList { get; set; }
         public List<StorageList> GorodList { get; set; }
         public List<StorageList> VolnoList { get; set; }
         public DelegateCommand ResultForDate { get; }
         public DelegateCommand OpenNewaddWindow { get; }
 
-        public string TextForSearch { get => _textForSearch; set => SetProperty(ref _textForSearch, value); }
+        public string TextForSearch { get => _textForSearch; set
+            {
+                if (_textForSearch == value) return;
+               SetProperty(ref _textForSearch, value); } }
         private string _textForSearch;
-    
-       
+        private void UpdateResourse()
+        {
+      
+            MedCont.НаименованиеЛекарственныхСредствs.Load();
+            MedCont.ДокументыВещиs.Load();
+            MedCont.ПриходРасходs.Load();
+            MedCont.Rofs.Load();
+            MedCont.ТипДокументацииs.Load();
+            MedCont.Складыs.Load();
+            
+        }
+     
         public ICommand RefreshTable
         {
             get
             {
                 return new RelayCommand(() =>
                 {
+                    UpdateResourse();
                     //Загрузка данных 
                     GlList = new List<StorageList>();
-                    MedCont.НаименованиеЛекарственныхСредствs.Load();
-                    MedCont.ДокументыВещиs.Load();
-                    MedCont.ПриходРасходs.Load();
-                    MedCont.Rofs.Load();
-                    MedCont.ТипДокументацииs.Load();
-                    MedCont.Складыs.Load();
+                    
 
 
                     //Соединение таблиц
@@ -81,11 +90,11 @@ namespace PredpriyatieProject.ViewModels
                     //Выборка для определения остатка на начало
                     var filterstartForOstatok = gr2.Where(x => (x.type == 1) && (x.slad == kostile) && x.date <= dateTimeStart).AsEnumerable();
                     var fitterendForOstatok = gr2.Where(x => (x.type == 2) && (x.slad == kostile) && x.date <= dateTimeStart).AsEnumerable();
-               
+                   
                     //Выборки для получение текущих приходов расходов
                     var filterstart = gr2.Where(x => (x.type == 1) && (x.slad == 4) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
                     var filterend = gr2.Where(x => (x.type == 2) && (x.slad == 4) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
-
+                 
 
                     //Группировка по имени ценности
                     var grupedend = filterend.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
@@ -94,6 +103,7 @@ namespace PredpriyatieProject.ViewModels
 
                     //тоже самое только для остатка на начало
                     var ostatokGruppedstart = filterstartForOstatok.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
+               
                     var ostaokGruppedEnd = fitterendForOstatok.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
 
 
@@ -114,6 +124,7 @@ namespace PredpriyatieProject.ViewModels
                         if (k == 0)
                         {
                             ostatokOnStarListt.Add(new Data(start.Name, start.Kol));
+                       
                         }
                     }
 
@@ -127,17 +138,7 @@ namespace PredpriyatieProject.ViewModels
                     }
 
 
-                    //Зачем?
-                    //for (int i = 0; i < prihod.Count; i++)
-                    //{
-                    //    foreach (var item in grupedend)
-                    //    {
-                    //        if (item.Name == prihod[i].StringData)
-                    //        {
-                    //            prihod[i].IntegerData -= item.Kol;
-                    //        }
-                    //    }
-                    //}
+               
 
 
                     //Заполнение таблицы 
@@ -146,6 +147,7 @@ namespace PredpriyatieProject.ViewModels
                         int prihoditem = Int32.Parse(grupedstart.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
                         int rashoditem = Int32.Parse(grupedend.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
                         int ostatokonStartLocal = Int32.Parse(ostatokOnStarListt.Where(x => x.StringData == item.StringData).Select(x => x.IntegerData).FirstOrDefault().ToString());
+
                         string EdIzm = MedCont.НаименованиеЛекарственныхСредствs.Join(MedCont.ЕдиницыИзмеренияs, x => x.ЕдиницаИзмерения, y => y.Код, (x, y) => new { edizmint = x.ЕдиницаИзмерения, edizmItem = y.ЕдИзмерения }).Where(x=>x.edizmint == item.id).Select(x => x.edizmItem).FirstOrDefault().ToString();
                         GlList.Add(new StorageList(item.StringData, EdIzm, "", ostatokonStartLocal, "", prihoditem, rashoditem));
                     }
@@ -170,11 +172,14 @@ namespace PredpriyatieProject.ViewModels
 
         public FirstVM()
         {
+         
+            dateTimeStart = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            dateTimeEnd = DateTime.Today;
+            kostile = 4;
 
-            RefreshTable.Execute(RefreshTable);
             OpenNewaddWindow = new DelegateCommand(() => { AddWind addWind = new AddWind();   addWind.ShowDialog();  RefreshTable.Execute(RefreshTable); });
             ResultForDate = new DelegateCommand(() => { MessageBox.Show(dateTimeEnd.ToString()); });
-
+         //   RefreshTable.Execute(RefreshTable);
         }
 
     }

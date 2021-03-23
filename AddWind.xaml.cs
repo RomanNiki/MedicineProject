@@ -30,5 +30,9 @@ namespace PredpriyatieProject
 
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RefrashTable.Command.Execute(RefrashTable.Command);
+        }
     }
 }

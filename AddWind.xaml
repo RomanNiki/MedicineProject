@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      
+       xmlns:Them="clr-namespace:MaterialDesignThemes.Wpf.Converters.CircularProgressBar;assembly=MaterialDesignThemes.Wpf"
         xmlns:local="clr-namespace:PredpriyatieProject" xmlns:lctr="clr-namespace:PredpriyatieProject.ViewModels"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="AddWind" Height="450" Width="500" MaxHeight="450" MaxWidth="500" MinHeight="450" Style="{StaticResource VS2012WindowStyle1}" MinWidth="500"  ResizeMode="NoResize" >
+        Title="Добавить" Height="550" Width="550" MaxHeight="450" MaxWidth="550" MinHeight="550
+        "  Style="{StaticResource VS2012WindowStyle1}" MinWidth="500"  ResizeMode="NoResize" >
     <Window.DataContext>
         <lctr:SecondVM></lctr:SecondVM>
     </Window.DataContext>
@@ -17,50 +19,62 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.3*"/>
+          
             <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.1*"/>
             <RowDefinition/>
+            <RowDefinition Height="0.3*"/>
             <RowDefinition Height="0.1*"/>
 
+
         </Grid.RowDefinitions>
-        <ToggleButton Style="{DynamicResource ToggleButtonStyle1}" Margin="5" Grid.ColumnSpan="3" Content="{Binding NameOfToggleButton}" IsChecked="{Binding IsChechedAddWind}"/>
-        <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <Label FontSize="13" Height="26" Content="Склад"/>
-            <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210" FontSize="20" x:Name="Склад" Height="30" ItemsSource="{Binding ComboboxScladi}" SelectedIndex="0" SelectedValue="{Binding SelectedItemScladi}"></ComboBox>
-            <Label FontSize="13" Height="26" Content="Подразделение"/>
-            <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210" FontSize="20" x:Name="Подразделения" Height="30" ItemsSource="{Binding ComboboxPodrazdeleniya}" SelectedValue="{Binding SelecteditemPodrazd}" SelectedIndex="16"  ></ComboBox>
+        <!--<ToggleButton Style="{DynamicResource ToggleButtonStyle1}" Margin="5" Grid.ColumnSpan="3" Content="{Binding NameOfToggleButton}" IsChecked="{Binding IsChechedAddWind}"/>-->
+        <StackPanel Grid.Row="0" VerticalAlignment="Center">
+        
+            <ComboBox Style="{DynamicResource MaterialDesignComboBox}" md:HintAssist.Hint="Склад" Width="210" FontSize="20" x:Name="Склад" Height="35" ItemsSource="{Binding ComboboxScladi}" SelectedIndex="0" SelectedValue="{Binding SelectedItemScladi}"></ComboBox>
+            <Label FontSize="13" Height="26" Content=""/>
+            <ComboBox Style="{DynamicResource MaterialDesignComboBox}" md:HintAssist.Hint="Подразделение" Width="210" FontSize="20" x:Name="Подразделения" Height="35" ItemsSource="{Binding ComboboxPodrazdeleniya}" SelectedValue="{Binding SelecteditemPodrazd}" SelectedIndex="16"  ></ComboBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Center">
-            <Label FontSize="12" Height="26" Content="Наименование ценности"/>
-            <ComboBox Style="{DynamicResource ComboBoxStyle1}" Width="210"
-          IsTextSearchEnabled="True"   IsEditable="False" FontSize="20" x:Name="Лекарства" Height="30"  SelectedIndex="{Binding SelectedIndCennsoti}" ItemsSource="{Binding ComboboxNazvLecarstvХ}"></ComboBox>
-            <Label FontSize="13" Height="26" Content="Количество"/>
-            <TextBox Width="210" FontSize="20" x:Name="NameOfMedicine" Style="{StaticResource TextBoxStyle1}"  PreviewTextInput="NumericOnly" Height="30" Text="{Binding KolvoTextbox}"></TextBox>
+        <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
+           
+            <ComboBox Style="{DynamicResource MaterialDesignComboBox}" md:HintAssist.HelperTextFontSize="12" md:HintAssist.HelperText="Наименование ценности" Height="35" Width="210"
+          IsTextSearchEnabled="True"   IsEditable="False" FontSize="20" x:Name="Лекарства"   SelectedIndex="{Binding SelectedIndCennsoti}" ItemsSource="{Binding ComboboxNazvLecarstvХ}"></ComboBox>
+            <Label FontSize="13" Height="26" Content=""/>
+            <TextBox Width="210" FontSize="20" x:Name="NameOfMedicine"  md:HintAssist.HelperTextFontSize="12" md:HintAssist.HelperText="Количество"  PreviewTextInput="NumericOnly" Height="30" Text="{Binding KolvoTextbox}"></TextBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" VerticalAlignment="Center">
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="3" VerticalAlignment="Stretch">
 
             <!--<TextBox  Width="210" FontSize="20" x:Name="NazvDok" Height="30" Text="{Binding NameOfDoc}"  Style="{StaticResource TextBoxStyle1}"></TextBox>-->
             <!--<Label FontSize="13" Height="26" Content="Дата документа"/>
             <DatePicker Style="{DynamicResource DatePickerStyle1}" Width="210" FontSize="15" x:Name="DateOfDoc" Height="30" SelectedDate="{Binding DateOfDoc}"></DatePicker>-->
 
 
-            <StackPanel Width="230" Margin="1">
-                <DataGrid Margin="1" CanUserAddRows="True"  ColumnWidth="1*"  Height="100" Grid.ColumnSpan="2"  Grid.RowSpan="2" >
+           
+                <DataGrid Margin="7,0,0,0" AutoGenerateColumns="False" IsReadOnly="True"  ColumnWidth="1*"  Height="150" Grid.ColumnSpan="2"  Grid.RowSpan="2" ItemsSource="{Binding listOfDOcs}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Название документа" >
+                        <DataGridTextColumn Header="Название документа"  Binding="{Binding Name}">
+
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Название документа"  Binding="{Binding Date,StringFormat=dd.MM.yyyy}">
+
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Тип" Binding="{Binding TypeSTR}" >
 
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button  Height="20" Grid.ColumnSpan="2" Margin="1" Content="Добавить Новый документ" Style="{StaticResource ButtonStyle1}"></Button>
-            </StackPanel>
+                <Button  Height="30" Grid.ColumnSpan="2" Margin="7,15,0,0" Content="Добавить Новый документ" Command="{Binding OpenNewaddWindow}" md:ButtonAssist.CornerRadius="10" Background="#007ACC"></Button>
+                <Button Height="1" x:Name="RefrashTable" Visibility="Hidden" Command="{Binding firstVM.RefreshTable,UpdateSourceTrigger=PropertyChanged , Source={StaticResource Locator}}"></Button>
+     
 
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="2" VerticalAlignment="Bottom">
-            <Button Width="210" Style="{StaticResource ButtonStyle1}"  Command="{Binding Addbutt}" FontSize="14" Height="55" Content="Добавить"></Button>
+        <StackPanel Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Bottom" Grid.ColumnSpan="3">
+            <DatePicker VerticalAlignment="Top" Margin="15" md:HintAssist.HelperText="Дата документа" SelectedDate="{Binding DateOfDoc,UpdateSourceTrigger=PropertyChanged }"/>
+            <Label/>
+            <Button Click="Button_Click" Width="210" Background="#3d0987"  md:ButtonAssist.CornerRadius="10"   Command="{Binding Addbutt}" FontSize="14" Height="40" Content="Добавить" Cursor="Hand" ></Button>
         </StackPanel>
     </Grid>
 </Window>
