@@ -34,14 +34,9 @@
             <TextBox x:Name="Name" Text="{Binding NameOfDoc}" Width="100"  md:HintAssist.HelperText="Название" md:HintAssist.HelperTextFontSize="12"  Margin="10,0,0,0" ></TextBox>
             <ComboBox x:Name="Type" ItemsSource="{Binding TypeOfDoc}" SelectedIndex="{Binding IdTypeOfDoc}" Width="100" Margin="10,0,0,0" md:HintAssist.HelperText="Тип документа" md:HintAssist.HelperTextFontSize="12"  ></ComboBox>
             <DatePicker x:Name="Date" SelectedDate="{Binding SelectedDateDoc}" Width="100" Margin="10,0,0,0" md:HintAssist.HelperText="Дата документа" md:HintAssist.HelperTextFontSize="12" ></DatePicker>
-            <Button Margin="10,0,0,0" Content="Добавить"></Button>
-            <Button Margin="10,0,0,0" Content="Изменить" Background="#007ACC"></Button>
+            <Button Margin="10,0,0,0" Command="{Binding AddButton}" Content="Добавить"></Button>
+            <Button Margin="10,0,0,0" Content="Изменить" Command="{Binding ChangeButton}" Background="#007ACC" Cursor="Hand"></Button>
             <Button Margin="10,0,0,0" Background="#cd5c5c" BorderBrush="#cd5c5c" Command="{Binding Deletebutte}" Content="Удалить"></Button>
-            
-            
-            
-            
-            
         </StackPanel>
         
     </Grid>

@@ -52,7 +52,7 @@
 
 
            
-                <DataGrid Margin="7,0,0,0" AutoGenerateColumns="False" IsReadOnly="True"  ColumnWidth="1*"  Height="150" Grid.ColumnSpan="2"  Grid.RowSpan="2" ItemsSource="{Binding listOfDOcs}">
+                <DataGrid Margin="7,0,0,0" AutoGenerateColumns="False" IsReadOnly="True"  ColumnWidth="1*" SelectedItem="{Binding selectedItemDataGrid}"  Height="150" Grid.ColumnSpan="2"  Grid.RowSpan="2" ItemsSource="{Binding listOfDOcs}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Название документа"  Binding="{Binding Name}">
 
