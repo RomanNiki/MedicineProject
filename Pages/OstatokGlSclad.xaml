@@ -73,7 +73,8 @@
                 <DatePicker Height="23"  md:HintAssist.Hint="На конец" md:HintAssist.HelperText="На конец" md:HintAssist.HelperTextFontSize="14"  SelectedDate="{Binding dateTimeEnd,UpdateSourceTrigger=PropertyChanged}" Margin="10"/>
                 
             </StackPanel>
-            <Button  md:ButtonAssist.CornerRadius="10"  Content="Печать"  Height="50" Background="#007ACC" Margin="2" Width="110" Command="{Binding Addbutte}" Cursor="Hand"/>
+            
+            <Button  md:ButtonAssist.CornerRadius="10"  Content="Печать"  Height="50" Background="#007ACC" Margin="2" Width="110" Command="{Binding PrintButton}" Cursor="Hand"/>
             <StackPanel HorizontalAlignment="Center" Margin="2" Visibility="Hidden">
                 <Label Content="Поиск" />
                 <TextBox Style="{DynamicResource TextBoxStyle1}" Text="{Binding TextForSearch,UpdateSourceTrigger=PropertyChanged}"  Height="25" FontSize="12pt" Width="100" Name="SearchBox"/>
@@ -82,7 +83,10 @@
             </StackPanel>
            
                 <Button Margin="7" Content="Приход/Уход" Height="50" FontSize="12" Background="#007ACC"  Width="110"  md:ButtonAssist.CornerRadius="10"   Command="{Binding OpenNewaddWindow}"  Cursor="Hand"/>
-        
+                <Button Margin="7" Content="Переход" Height="50" FontSize="12" Background="#007ACC"  Width="110"  md:ButtonAssist.CornerRadius="10"   Command="{Binding }"  Cursor="Hand"/>
+
+            <Button 
+                Command="{Binding RefreshTable}" Cursor="Hand"></Button>
         </StackPanel>
        
     </Grid>

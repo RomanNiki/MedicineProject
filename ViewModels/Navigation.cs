@@ -2,40 +2,49 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 
 namespace PredpriyatieProject.ViewModels
 {
-   
 
 
-class Navigation : ViewModelBase
+
+    class Navigation : ViewModelBase
     {
         private Page Gorodishe;
         private Page GlSklad;
         private Page Volno;
         private Page Brigadi;
-
+        public byte IDbrigad { get => iDbrigad; set { iDbrigad = value; FirstVM.staticSelectedIDBrigad1 = value; } }
+        private byte iDbrigad;
+       public Visibility cmbvis { get; set; }
         private double _Opacity;
         public double Opacity { get { return _Opacity; } set { _Opacity = value; } }
         Page _CurrentPage;
+        public List<string> ComboboxBrigad { get; set; }
+
         public Page CurrentPage { get { return _CurrentPage; } set { _CurrentPage = value; } }
         public Navigation()
-        { 
+        {
+            ComboboxBrigad = FirstVM.MedCont.Бригадыs.Select(x => x.Название).ToList();
+            cmbvis = Visibility.Hidden;
             Opacity = 1;
-            
+            IDbrigad = 17;
             Gorodishe = new Pages.OstatokGorodishe();
             GlSklad = new Pages.OstatokGlSclad();
             Volno = new Pages.OstatokVolono();
-            Brigadi = new Pages.OstatokBrigadi(); 
-        
+            Brigadi = new Pages.OstatokBrigadi();
             CurrentPage = GlSklad;
             NameOfWindow = "  Главный склад  ";
-            FirstVM.kostile = 4;
+            FirstVM.staticSelectedIDBrigad1 = 17;
+            FirstVM.CurrentPage = 4;
+         
         }
         public bool IsLeftDrawerOpen { get; set; }
 
@@ -43,19 +52,19 @@ class Navigation : ViewModelBase
 
         public ICommand Gorodishee
         {
-            get { return new RelayCommand(() => { SlowOpacity(Gorodishe); NameOfWindow = "  Городище  "; FirstVM.kostile = 3; } ) ; }
+            get { return new RelayCommand(() => { SlowOpacity(Gorodishe); NameOfWindow = "  Городище  "; FirstVM.CurrentPage = 3; IDbrigad = 17; cmbvis = Visibility.Hidden; });  }
         }
         public ICommand GlSclad
         {
-            get { return new RelayCommand(() => { SlowOpacity(GlSklad); NameOfWindow = "  Главный склад  "; FirstVM.kostile = 4; }); }
+            get { return new RelayCommand(() => { SlowOpacity(GlSklad); NameOfWindow = "  Главный склад  "; FirstVM.CurrentPage = 4; IDbrigad = 17; cmbvis = Visibility.Hidden; }); }
         }
         public ICommand Voln
         {
-            get { return new RelayCommand(() => {SlowOpacity(Volno); NameOfWindow = "  Вольно  ";  FirstVM.kostile = 2; }); }
+            get { return new RelayCommand(() => { SlowOpacity(Volno); NameOfWindow = "  Вольно  "; FirstVM.CurrentPage = 2; IDbrigad = 17; cmbvis = Visibility.Hidden; }); }
         }
         public ICommand Brigad
         {
-            get { return new RelayCommand(() => { SlowOpacity(Brigadi); NameOfWindow = "  Амбулатория  "; FirstVM.kostile = 1; }); }
+            get { return new RelayCommand(() => { SlowOpacity(Brigadi); NameOfWindow = "  Амбулатория  "; FirstVM.CurrentPage = 1; cmbvis = Visibility.Visible; }); }
         }
         private async void SlowOpacity(Page page)
         {

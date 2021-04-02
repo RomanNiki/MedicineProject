@@ -38,13 +38,19 @@ namespace PredpriyatieProject.ViewModels
         {
             dateTimeStart = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             dateTimeEnd = DateTime.Today;
-            kostile = 4;
+            CurrentPage = 4;
             OpenNewaddWindow = new DelegateCommand(() => { AddWind addWind = new AddWind(); addWind.ShowDialog(); RefreshTable.Execute(RefreshTable); });
             ResultForDate = new DelegateCommand(() => { MessageBox.Show(dateTimeEnd.ToString()); });
+            VisibleComboboxByPodrazdelenia = false;
+            SelectedIDBrigad = 17;
+            staticSelectedIDBrigad = 17;
+            staticSelectedIDBrigad1 = 17;
         }
+        public  byte staticSelectedIDBrigad { get => staticSelectedIDBrigad1; set { staticSelectedIDBrigad1 = value; RefreshTable.Execute(RefreshTable); } }
 
-        static byte _kostile;
-        public static byte kostile { get => _kostile; set { _kostile = value; } }
+        public byte SelectedIDBrigad { get; set; }
+        static byte currentPage = 4;
+        public static byte CurrentPage { get => currentPage; set { currentPage = value; } }
         private DateTime _dateTime;
         public DateTime dateTimeStart { get => _dateTime; set { SetProperty(ref _dateTime, value); RefreshTable.Execute(RefreshTable); } }
         private DateTime _dateTimesecond;
@@ -59,6 +65,7 @@ namespace PredpriyatieProject.ViewModels
         public List<StorageList> VolnoList { get; set; }
         public DelegateCommand ResultForDate { get; }
         public DelegateCommand OpenNewaddWindow { get; }
+        public bool VisibleComboboxByPodrazdelenia { get; set; }
         public string TextForSearch
         {
             get => _textForSearch; set
@@ -68,6 +75,7 @@ namespace PredpriyatieProject.ViewModels
             }
         }
         private string _textForSearch;
+        public static byte staticSelectedIDBrigad1 = 17;
 
         private void UpdateResourse()
         {
@@ -91,38 +99,35 @@ namespace PredpriyatieProject.ViewModels
                     //Загрузка данных 
                     GlList = new List<StorageList>();
 
-
-
                     //Соединение таблиц
                     var group = MedCont.НаименованиеЛекарственныхСредствs.Local.Join(MedCont.ДокументыВещиs.Local, x => x.Id, x => x.НаименованиеЦенности, (x, y) => new { doc = y.Документ, name = x.НаименованиеЦенностей, kol = y.Количество, ide = x.ЕдиницаИзмерения });
-                    var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol, date = x.Дата, id = y.ide });
-
+                    var gr2 = MedCont.ПриходРасходs.Local.Join(group, x => x.Id, x => x.doc, (x, y) => new { type = x.ТипДокумента, slad = x.Склад, name = y.name, kol = y.kol, date = x.Дата, id = y.ide, podrazd = x.Подразделение });
 
                     //Выборка для определения остатка на начало
-                    var filterstartForOstatok = gr2.Where(x => (x.type == 1) && (x.slad == kostile) && x.date <= dateTimeStart).AsEnumerable();
-                    var fitterendForOstatok = gr2.Where(x => (x.type == 2) && (x.slad == kostile) && x.date <= dateTimeStart).AsEnumerable();
+                    var filterstartForOstatok = gr2.Where(x => (x.type == 1) && (x.slad == CurrentPage) && x.date < dateTimeStart ).AsEnumerable();
+                    var fitterendForOstatok = gr2.Where(x => (x.type == 2) && (x.slad == CurrentPage) && x.date < dateTimeStart ).AsEnumerable();
 
                     //Выборки для получение текущих приходов расходов
-                    var filterstart = gr2.Where(x => (x.type == 1) && (x.slad == 4) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
-                    var filterend = gr2.Where(x => (x.type == 2) && (x.slad == 4) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
+                    var filterstart = gr2.Where(x => (x.type == 1) && (x.slad == CurrentPage) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd) ).AsEnumerable();
+                    var filterend = gr2.Where(x => (x.type == 2) && (x.slad == CurrentPage) && (x.date >= dateTimeStart) && (x.date <= dateTimeEnd)).AsEnumerable();
 
+
+
+                    var itemOfStorageFilter = gr2.Where(x => (x.slad == CurrentPage)).AsEnumerable();
+                    var groupedItemOfstorage = itemOfStorageFilter.GroupBy(x => x.name, (x, y) => new { Name = x, Id = int.Parse(y.Select(x=> x.id).FirstOrDefault().ToString()) }).ToList();
 
                     //Группировка по имени ценности
                     var grupedend = filterend.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
                     var grupedstart = filterstart.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()), id = Int32.Parse(y.Select(x => x.id).FirstOrDefault().ToString()) }).ToList();
 
-
                     //тоже самое только для остатка на начало
                     var ostatokGruppedstart = filterstartForOstatok.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
-
                     var ostaokGruppedEnd = fitterendForOstatok.GroupBy(x => x.name, (x, y) => new { Name = x, Kol = Int32.Parse(y.Select(x => x.kol).Sum().ToString()) }).ToList();
-
 
                     //Лист для получение текущих приходов расходов
                     List<Data> prihod = new List<Data>();
                     //Лист для остатка на начало
                     List<Data> ostatokOnStarListt = new List<Data>();
-
 
                     //заполнение листа и определ остатка на начало
                     foreach (var start in ostatokGruppedstart)
@@ -135,11 +140,8 @@ namespace PredpriyatieProject.ViewModels
                         if (k == 0)
                         {
                             ostatokOnStarListt.Add(new Data(start.Name, start.Kol));
-
                         }
                     }
-
-
 
                     //Лист для получение текущих приходов расходов
                     foreach (var item1 in grupedstart)
@@ -148,26 +150,24 @@ namespace PredpriyatieProject.ViewModels
                         prihod.Add(new Data(item1.Name, item1.Kol, Int32.Parse(item1.id.ToString())));
                     }
 
-
-
-
-
                     //Заполнение таблицы 
-                    foreach (var item in prihod)
+                    foreach (var item in groupedItemOfstorage)
                     {
-                        int prihoditem = Int32.Parse(grupedstart.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
-                        int rashoditem = Int32.Parse(grupedend.Where(x => x.Name == item.StringData).Select(x => x.Kol).FirstOrDefault().ToString());
-                        int ostatokonStartLocal = Int32.Parse(ostatokOnStarListt.Where(x => x.StringData == item.StringData).Select(x => x.IntegerData).FirstOrDefault().ToString());
-
-                        string EdIzm = MedCont.НаименованиеЛекарственныхСредствs.Join(MedCont.ЕдиницыИзмеренияs, x => x.ЕдиницаИзмерения, y => y.Код, (x, y) => new { edizmint = x.ЕдиницаИзмерения, edizmItem = y.ЕдИзмерения }).Where(x => x.edizmint == item.id).Select(x => x.edizmItem).FirstOrDefault().ToString();
-                        GlList.Add(new StorageList(item.StringData, EdIzm, "", ostatokonStartLocal, "", prihoditem, rashoditem));
+                        if (grupedstart.Where(x=>x.Name==item.Name).ToList().Count>0 || grupedend.Where(x => x.Name == item.Name).ToList().Count > 0 || ostatokOnStarListt.Where(x => x.StringData == item.Name).ToList().Count > 0)
+                        {
+                            int prihoditem = Int32.Parse(grupedstart.Where(x => x.Name == item.Name).Select(x => x.Kol).FirstOrDefault().ToString());
+                            int rashoditem = Int32.Parse(grupedend.Where(x => x.Name == item.Name).Select(x => x.Kol).FirstOrDefault().ToString());
+                            int ostatokonStartLocal = Int32.Parse(ostatokOnStarListt.Where(x => x.StringData == item.Name).Select(x => x.IntegerData).FirstOrDefault().ToString());
+                            string EdIzm = MedCont.НаименованиеЛекарственныхСредствs.Join(MedCont.ЕдиницыИзмеренияs, x => x.ЕдиницаИзмерения, y => y.Код, (x, y) => new { edizmint = x.ЕдиницаИзмерения, edizmItem = y.ЕдИзмерения }).Where(x => x.edizmint == item.Id).Select(x => x.edizmItem).FirstOrDefault().ToString();
+                            GlList.Add(new StorageList(item.Name, EdIzm, "", ostatokonStartLocal, "", prihoditem, rashoditem));
+                        }
                     }
 
                 });
             }
         }
 
-        public ICommand Addbutte
+        public ICommand PrintButton
         {
             get
             {
@@ -202,13 +202,13 @@ namespace PredpriyatieProject.ViewModels
 
                         // Напечатать элемент
                         printDialog.PrintVisual(visual, "Распечатываем текст");
-                      
+
                     }
                 });
             }
         }
 
-   
+
 
     }
 }

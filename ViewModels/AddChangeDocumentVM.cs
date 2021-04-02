@@ -59,7 +59,7 @@ namespace PredpriyatieProject.ViewModels
             DocumentsList = new List<DocumentsDate>();
             DateTime dateTimeStart = new DateTime(SelectedMonthYear.Year, SelectedMonthYear.Month, 1);
             DateTime dateTimeend = new DateTime(SelectedMonthYear.Year, SelectedMonthYear.Month, DateTime.DaysInMonth(SelectedMonthYear.Year, SelectedMonthYear.Month));
-            var a = datacontext.ПриходРасходs.Join(datacontext.ТипДокументацииs, x => x.ТипДокумента, y => y.Id, (x, y) => new { y, x }).Where(x => x.x.Дата >= dateTimeStart && x.x.Дата <= dateTimeend && x.x.Склад == FirstVM.kostile).Select(x => new { Name = x.x.Название, date = x.x.Дата, id = x.x.Id, type = x.y.Название });
+            var a = datacontext.ПриходРасходs.Join(datacontext.ТипДокументацииs, x => x.ТипДокумента, y => y.Id, (x, y) => new { y, x }).Where(x => x.x.Дата >= dateTimeStart && x.x.Дата <= dateTimeend && x.x.Склад == FirstVM.CurrentPage).Select(x => new { Name = x.x.Название, date = x.x.Дата, id = x.x.Id, type = x.y.Название });
             foreach (var e in a)
             {
                 DocumentsList.Add(new DocumentsDate(e.Name, (DateTime)e.date, e.id, e.type));
@@ -117,16 +117,20 @@ namespace PredpriyatieProject.ViewModels
                     addItem.Дата = SelectedDateDoc;
                     addItem.Название = NameOfDoc;
                     addItem.Подразделение = podrazdelenie;
-                    addItem.Склад = FirstVM.kostile;
-                    addItem.ТипДокумента = IdTypeOfDoc+1;
-                    var f = datacontext.ПриходРасходs.Where(x => x.Дата == addItem.Дата && x.Название == addItem.Название && x.ТипДокумента == addItem.ТипДокумента).Select(x => x).ToList();
-                    if (f.Count == 0)
+                    addItem.Склад = FirstVM.CurrentPage;
+                    if (IdTypeOfDoc+1 >= 1 && IdTypeOfDoc+1 <= 2)
                     {
-                        datacontext.ПриходРасходs.Add(addItem);
-                        datacontext.SaveChanges();
-                        ResfrashTable();
-                        MessageBox.Show("Данные добавлены", "Добавление");
+                        addItem.ТипДокумента = IdTypeOfDoc+1;
+                        var f = datacontext.ПриходРасходs.Where(x => x.Дата == addItem.Дата && x.Название == addItem.Название && x.ТипДокумента == addItem.ТипДокумента).Select(x => x).ToList();
+                        if (f.Count == 0)
+                        {
+                            datacontext.ПриходРасходs.Add(addItem);
+                            datacontext.SaveChanges();
+                            ResfrashTable();
+                            MessageBox.Show("Данные добавлены", "Добавление");
+                        }
                     }
+                    else { MessageBox.Show(IdTypeOfDoc.ToString()); }
                 });
             }
         }

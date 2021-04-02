@@ -23,11 +23,11 @@
                               IsChecked="{Binding IsLeftDrawerOpen, ElementName=DrawerHost}"
                               HorizontalAlignment="Right"/>
 
-                <Button  x:Name="but1" Height="25"  Content="Главный склад" Command="{Binding GlSclad, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
-                <Button x:Name="but2" Height="25" Content="Городечно" Command="{Binding Gorodishee, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
-                <Button x:Name="but3" Height="25"  Content="Вольно" Command="{Binding Voln, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                <Button Click="but1_Click"  x:Name="but1" Height="25"  Content="Главный склад" Command="{Binding GlSclad, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                <Button Click="but2_Click" x:Name="but2" Height="25" Content="Городечно" Command="{Binding Gorodishee, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
+                <Button Click="but3_Click" x:Name="but3" Height="25"  Content="Вольно" Command="{Binding Voln, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
                         <Button x:Name="but4" Height="25" Content="Амбулатория" Command="{Binding Brigad, IsAsync=True}" Style="{DynamicResource MaterialDesignFlatButton}" Foreground="Black" Cursor="Hand"/>
-                        
+                <Button x:Name="but6" Visibility="Hidden" Command="{Binding firstVM.RefreshTable,Source={StaticResource Locator}}" Cursor="Hand"></Button>
                     <Border Background="Transparent" Grid.ColumnSpan="3" Grid.Row="1" Height="1" ></Border>
 
                    
@@ -56,9 +56,9 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center" 
                                Grid.Column="1" />
-                    <StackPanel HorizontalAlignment="Right" Margin="0 ,0,20,0" Grid.Column="1" >
-                     
-                        <TextBox  Style="{StaticResource MaterialDesignTextBox}" materialdesigns:HintAssist.Hint="Поиск" Text="{Binding  firstVM.TextForSearch,UpdateSourceTrigger=PropertyChanged, Source={StaticResource Locator}}"   FontSize="12pt" Width="100" Name="SearchBox"/>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="0 ,0,20,0" Grid.Column="1" >
+                        <ComboBox Width="150" Margin="0,0,20,0" Visibility="{Binding cmbvis}" SelectedIndex="{Binding  IDbrigad}" ItemsSource="{Binding ComboboxBrigad}" materialdesigns:HintAssist.Hint="Подразделение"></ComboBox>
+                        <TextBox  Style="{StaticResource MaterialDesignTextBox}" materialdesigns:HintAssist.Hint="Поиск" Text="{Binding  firstVM.TextForSearch,UpdateSourceTrigger=PropertyChanged, Source={StaticResource Locator}}"   FontSize="12pt" Width="100" Name="SearchBox" Cursor="IBeam"/>
 
 
                     </StackPanel>

@@ -143,5 +143,19 @@ namespace PredpriyatieProject
 
         #endregion
 
+        private void but2_Click(object sender, RoutedEventArgs e)
+        {
+            but6.Command.Execute(but6.Command);
+        }
+
+        private void but3_Click(object sender, RoutedEventArgs e)
+        {
+            but6.Command.Execute(but6.Command);
+        }
+
+        private void but1_Click(object sender, RoutedEventArgs e)
+        {
+            but6.Command.Execute(but6.Command);
+        }
     }
 }

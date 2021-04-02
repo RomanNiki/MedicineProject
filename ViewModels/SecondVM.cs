@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PredpriyatieProject.ViewModels
@@ -103,6 +104,10 @@ namespace PredpriyatieProject.ViewModels
                 документыВещиadd.ДокументNavigation = приходРасходadd;
                 medicineContext.ДокументыВещиs.Add(документыВещиadd);
                 medicineContext.SaveChanges();
+            }
+            else
+            {
+                MessageBox.Show("Документ не выбран");
             }
         }
 
