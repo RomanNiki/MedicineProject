@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using PredpriyatieProject.ViewModels;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace PredpriyatieProject
 {
@@ -21,6 +13,7 @@ namespace PredpriyatieProject
         public AddWind()
         {
             InitializeComponent();
+
         }
 
         private void NumericOnly(System.Object sender, System.Windows.Input.TextCompositionEventArgs e)
@@ -37,5 +30,9 @@ namespace PredpriyatieProject
 
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RefrashTable.Command.Execute(RefrashTable.Command);
+        }
     }
 }

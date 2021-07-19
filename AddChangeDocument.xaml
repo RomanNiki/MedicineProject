@@ -1,0 +1,43 @@
+﻿<Window x:Class="PredpriyatieProject.AddChangeDocument"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PredpriyatieProject"
+        xmlns:md ="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="AddChangeDocument" Height="480" Width="800"
+         DataContext="{Binding AddChangeDocumentVM, Mode=TwoWay, Source={StaticResource Locator}}" Style="{StaticResource VS2012WindowStyle1}"
+        >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="0.25*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Grid.RowSpan="3" >
+            <Calendar  x:Name="CalendarYear"   SelectedDate="{Binding SelectedMonthYear}" Style="{StaticResource MaterialDesignDatePickerCalendarPortrait}" Language="ru-RU" />
+        </StackPanel>
+        <DataGrid IsReadOnly="True"  Grid.Row="1" Margin="7,0,0,0" ColumnWidth="*" SelectedItem="{Binding selecteditem}" ItemsSource="{Binding Path=DocumentsList, UpdateSourceTrigger=PropertyChanged}"  AutoGenerateColumns="False">
+            <DataGrid.Columns >
+                <DataGridTextColumn Binding="{Binding Name}" Header="Название документа"/>
+                <DataGridTextColumn Binding="{Binding Date,StringFormat=dd.MM.yyyy}" Header="Дата документа"/>
+                <DataGridTextColumn Binding="{Binding type}" Header="Тип документа"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Orientation="Horizontal">
+            <!--<TextBox x:Name="id" Text="{Binding IdOfDoc}" IsEnabled="False"  Margin="10,0,0,0" md:HintAssist.HelperText="Название" md:HintAssist.HelperTextFontSize="12" ></TextBox>-->
+            <TextBox x:Name="Name" Text="{Binding NameOfDoc}" Width="100"  md:HintAssist.HelperText="Название" md:HintAssist.HelperTextFontSize="12"  Margin="10,0,0,0" ></TextBox>
+            <ComboBox x:Name="Type" ItemsSource="{Binding TypeOfDoc}" SelectedIndex="{Binding IdTypeOfDoc}" Width="100" Margin="10,0,0,0" md:HintAssist.HelperText="Тип документа" md:HintAssist.HelperTextFontSize="12"  ></ComboBox>
+            <DatePicker x:Name="Date" SelectedDate="{Binding SelectedDateDoc}" Width="100" Margin="10,0,0,0" md:HintAssist.HelperText="Дата документа" md:HintAssist.HelperTextFontSize="12" ></DatePicker>
+            <Button Margin="10,0,0,0" Command="{Binding AddButton}" Content="Добавить"></Button>
+            <Button Margin="10,0,0,0" Content="Изменить" Command="{Binding ChangeButton}" Background="#007ACC" Cursor="Hand"></Button>
+            <Button Margin="10,0,0,0" Background="#cd5c5c" BorderBrush="#cd5c5c" Command="{Binding Deletebutte}" Content="Удалить"></Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>

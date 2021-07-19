@@ -13,32 +13,33 @@ using System;
 namespace PredpriyatieProject
 {
 
-    internal static class LocalExtensions
+   
+internal static class LocalExtensions
+{
+    public static void ForWindowFromChild(this object childDependencyObject, Action<Window> action)
     {
-        public static void ForWindowFromChild(this object childDependencyObject, Action<Window> action)
+        var element = childDependencyObject as DependencyObject;
+        while (element != null)
         {
-            var element = childDependencyObject as DependencyObject;
-            while (element != null)
-            {
-                element = VisualTreeHelper.GetParent(element);
-                if (element is Window) { action(element as Window); break; }
-            }
-        }
-
-        public static void ForWindowFromTemplate(this object templateFrameworkElement, Action<Window> action)
-        {
-            Window window = ((FrameworkElement)templateFrameworkElement).TemplatedParent as Window;
-            if (window != null) action(window);
-        }
-
-        public static IntPtr GetWindowHandle(this Window window)
-        {
-            WindowInteropHelper helper = new WindowInteropHelper(window);
-            return helper.Handle;
+            element = VisualTreeHelper.GetParent(element);
+            if (element is Window) { action(element as Window); break; }
         }
     }
 
-    public partial class VS2012WindowStyle
+    public static void ForWindowFromTemplate(this object templateFrameworkElement, Action<Window> action)
+    {
+        Window window = ((FrameworkElement)templateFrameworkElement).TemplatedParent as Window;
+        if (window != null) action(window);
+    }
+
+    public static IntPtr GetWindowHandle(this Window window)
+    {
+        WindowInteropHelper helper = new WindowInteropHelper(window);
+        return helper.Handle;
+    }
+}
+
+public partial class VS2012WindowStyle
     {
         #region sizing event handlers
 

@@ -33,9 +33,9 @@ namespace PredpriyatieProject.ViewModels
             {
                 Date = DateTime.Now
             };
-
-        public FirstVM firstVM { get; } = new FirstVM { dateTimesecond = DateTime.Today, dateTime = DateTime.Today, TextForSearch ="", AmbulatoriList=new List<Tabels.StorageList>(), GlList = new List<Tabels.StorageList>(), GorodList = new List<Tabels.StorageList>(), VolnoList = new List<Tabels.StorageList>()};
-        
+        //DateTime.DaysInMonth(DateTime.Today.Year, DateTime.Today.Month)
+        public FirstVM firstVM { get; set; } = new FirstVM { dateTimeEnd =  DateTime.Today, dateTimeStart = new DateTime( DateTime.Today.Year,DateTime.Today.Month,1), TextForSearch =""};
+        public AddChangeDocumentVM AddChangeDocumentVM { get; set; } = new AddChangeDocumentVM {  };
 
     }
 

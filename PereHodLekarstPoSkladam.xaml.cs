@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PredpriyatieProject.Pages
+namespace PredpriyatieProject
 {
     /// <summary>
-    /// Логика взаимодействия для OstatokGlSclad.xaml
+    /// Логика взаимодействия для PereHodLekarstPoSkladam.xaml
     /// </summary>
-    public partial class OstatokGlSclad : Page
+    public partial class PereHodLekarstPoSkladam : Window
     {
-        public OstatokGlSclad()
+        public PereHodLekarstPoSkladam()
         {
             InitializeComponent();
         }

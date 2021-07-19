@@ -11,6 +11,17 @@ namespace PredpriyatieProject
     {
         public MedicineContext()
         {
+            if (Database.CanConnect()==false)
+            {
+                
+            }
+
+          НаименованиеЛекарственныхСредствs.Load();
+          ДокументыВещиs.Load();
+          ПриходРасходs.Load();
+          Rofs.Load();
+          ТипДокументацииs.Load();
+          Складыs.Load();
         }
 
         public MedicineContext(DbContextOptions<MedicineContext> options)
@@ -24,13 +35,14 @@ namespace PredpriyatieProject
         public virtual DbSet<ЕдиницыИзмерения> ЕдиницыИзмеренияs { get; set; }
         public virtual DbSet<НаименованиеЛекарственныхСредств> НаименованиеЛекарственныхСредствs { get; set; }
         public virtual DbSet<ПриходРасход> ПриходРасходs { get; set; }
-        public virtual DbSet<Приходвсе> Приходвсеs { get; set; }
+        public virtual DbSet<Приходвсего> Приходвсеs { get; set; }
         public virtual DbSet<Склады> Складыs { get; set; }
         public virtual DbSet<ТипДокументации> ТипДокументацииs { get; set; }
         public virtual DbSet<УходВсе> УходВсеs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+    
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Medicine;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
@@ -151,13 +163,13 @@ namespace PredpriyatieProject
                     .HasConstraintName("Приход\\Расход$Названия документовПриход\\Расход");
             });
 
-            modelBuilder.Entity<Приходвсе>(entity =>
+            modelBuilder.Entity<Приходвсего>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("Приходвсе");
+                entity.ToView("Приходвсего");
 
-                entity.Property(e => e.SumКоличество).HasColumnName("Sum-Количество");
+                entity.Property(e => e.SumКоличество).HasColumnName("Количество");
 
                 entity.Property(e => e.НаименованиеЦенностей)
                     .HasMaxLength(255)
@@ -184,9 +196,9 @@ namespace PredpriyatieProject
             {
                 entity.HasNoKey();
 
-                entity.ToView("УходВсе");
+                entity.ToView("УходВсего");
 
-                entity.Property(e => e.SumКоличество).HasColumnName("Sum-Количество");
+                entity.Property(e => e.SumКоличество).HasColumnName("Количество");
 
                 entity.Property(e => e.НаименованиеЦенностей)
                     .HasMaxLength(255)
